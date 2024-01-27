@@ -1,32 +1,19 @@
-// echo "# shoppingCart" >> README.md
-// git init
-// git add README.md
-// git commit -m "first commit"
-// git branch -M main
-// git remote add origin https://github.com/gauravaps/shoppingCart.git
-// git push -u origin maingit init
-// console.log('this is console');
-// let num =5
-//  let fact=1
-// for(let i=1;i<=num;i++){
-//     fact*=i
-  
-  
+const express=require('express')
+const cors=require('cors')
+const bodyparser=require('body-parser')
 
+const app=express()
+//use cors
+app.use(cors())
 
-// }
-//console.log(fact);
-// Define the number whose factorial you want to calculate
-const number = 5;
-let factorial = 1;
+//use body-parser for json and URL incoded..
+app.use(bodyparser.urlencoded({extended:false}))
+app.use(bodyparser.json())
 
-// Calculate the factorial using a for loop
-for (let i = 1; i <= number; i++) {
-    
-    factorial *= i;
-    
-console.log("Factorial of", number + ":", factorial);
-}
+const port=process.env.PORT || 5000
 
-// // Print the factorial
-// console.log("Factorial of", number + ":", factorial);
+app.use((req,res)=>{
+    res.json({mesg:'this is shopping cart...'})
+})
+
+app.listen(port,console.log('express running..'))
