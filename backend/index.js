@@ -1,10 +1,12 @@
 const express=require('express')
 const cors=require('cors')
 const bodyparser=require('body-parser')
+const db=require('./dataBaseConnection/db') 
 
 const app=express()
 //use cors
 app.use(cors())
+
 
 //use body-parser for json and URL incoded..
 app.use(bodyparser.urlencoded({extended:false}))
@@ -16,4 +18,6 @@ app.use((req,res)=>{
     res.json({mesg:'this is shopping cart...'})
 })
 
-app.listen(port,console.log('express running..'))
+app.listen(port,()=>{
+    console.log('express is running on port',port); 
+})
