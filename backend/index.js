@@ -2,6 +2,7 @@ const express=require('express')
 const cors=require('cors')
 const bodyparser=require('body-parser')
 const db=require('./dataBaseConnection/db') 
+const route=require('./routes/routes')
 
 const app=express()
 //use cors
@@ -13,6 +14,9 @@ app.use(bodyparser.urlencoded({extended:false}))
 app.use(bodyparser.json())
 
 const port=process.env.PORT || 5000
+
+// Use userRoutes
+app.use('/api',route)
 
 app.use((req,res)=>{
     res.json({mesg:'this is shopping cart...'})
