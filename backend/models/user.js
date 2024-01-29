@@ -10,6 +10,13 @@ const userschema=new mongoose.Schema({
         type:String,
         required:true,
         uniue:true,
+        validate: {
+            validator: (v) => {
+                // Regular expression for email validation
+                return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z.]{2,}$/.test(v);
+            },
+            message: error => `${error.value} is not a valid email address`
+        }
     },
     dob:{
         type:Date,
@@ -24,17 +31,16 @@ const userschema=new mongoose.Schema({
         type:String,
         require:true,
         validate:{
-            validator: /^\d{10}$/
+            validator:(v)=>{
+                return /^d{10}$/.test(v)
+            },
+            message:error=>`${error.value} this is invalid number`
+        }
+    },
+        
+           
 
-         },
-
-        // validator:(v)=>{
-        //     return /^\d{10}$/.test(v);
-
-        // },
-        // message:error =>`${error.value} this is not a valid number`
-
-    }
+     
 
 },{timestamps:true})
 
