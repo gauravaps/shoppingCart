@@ -18,9 +18,6 @@ const port=process.env.PORT || 5000
 // Use userRoutes
 app.use('/api',route)
 
-app.use((req,res)=>{
-    res.json({mesg:'this is shopping cart...'})
-})
 
 app.listen(port,()=>{
     console.log('express is running on port',port);  
