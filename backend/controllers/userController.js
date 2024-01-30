@@ -7,6 +7,18 @@ const addUser=async(req,res)=>{
     try {
         // get data from body
         const{fullname,email,dob,gender,phone}=req.body;
+
+        if(!fullname || !email || !dob || !gender || !phone){
+           return res.status(400).json('all fields are required please fill')
+        }
+
+        const userExist= registeruser.findOne({email})
+
+        if(userExist){
+            res.status(400).json('user already registered!')
+        }
+
+
         const newuser=  new registeruser({
             fullname,
             email, 
