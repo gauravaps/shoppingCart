@@ -92,4 +92,46 @@ try {
 }
 }
 
-module.exports = { addUser, getUser, getsingleUser ,deleteUser};
+//Update user...!!!!
+const updateUser = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const { fullname, email, dob, gender, phone ,password} = req.body;
+
+      // // Find user by ID
+       //const user = await registeruser.findById(id);
+
+      // if (!user) {
+      //     return res.status(404).json({ message: 'User not found' });
+      // }
+
+      // // Verify old password
+     //const isPasswordValid = await bcrypt.compare(password, user.password);
+
+     // if (!isPasswordValid) {
+       //    return res.status(400).json({ message: 'Old password does not match' });
+      //}
+
+      // // Hash the new password
+      //const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Update user with hashed password
+      const updatedUser = await registeruser.findByIdAndUpdate(
+          id,
+          { fullname, email, dob, gender, phone,password},
+          { new: true }
+      );
+
+      res.status(200).json({ message: 'User updated successfully', user: updatedUser });
+  } catch (error) {
+      res.status(500).json({ message: 'Something went wrong', error: error.message });
+  }
+};
+
+
+
+
+
+
+
+module.exports = { addUser, getUser, getsingleUser ,deleteUser,updateUser};
