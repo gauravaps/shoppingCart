@@ -1,4 +1,5 @@
 const registeruser=require('../models/user')
+const bcrypt=require('bcryptjs')
 
 
 
@@ -6,17 +7,24 @@ const registeruser=require('../models/user')
 const addUser=async(req,res)=>{
     try {
         // get data from body
-        const{fullname,email,dob,gender,phone}=req.body;
+        const{fullname,email,dob,gender,phone,password}=req.body;
 
-        if(!fullname || !email || !dob || !gender || !phone){
+        // check if any require fields are empty
+        if(!fullname || !email || !dob || !gender || !phone || !password){
            return res.status(400).json('all fields are required please fill')
         }
 
-        const userExist= registeruser.findOne({email})
+            // check if user is already registered!
+        const userExist=await registeruser.findOne({email})
 
         if(userExist){
             res.status(400).json('user already registered!')
+
         }
+
+        // hashing password
+        const hashedpassword = await bcrypt.hash(password, 10);
+
 
 
         const newuser=  new registeruser({
@@ -25,9 +33,10 @@ const addUser=async(req,res)=>{
             dob,
             gender,
             phone,
+            password:hashedpassword
         })
         // save user
-        const saveuser=await newuser.save()
+        const saveuser=await newuser.save() 
         console.log(saveuser);
         
         res.status(200).json({'user':'user created successfull',saveuser})
