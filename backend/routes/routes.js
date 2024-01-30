@@ -1,11 +1,11 @@
 const express=require('express')
 const route=express.Router()
-const {addUser,loginUser,logoutUser} =require('../controllers/userController')
+const addUser =require('../controllers/userController')
 
 
 
 //Add user router!
-route.post('/addusser',addUser)
+route.post('/adduser',addUser)
 
 
 
@@ -13,3 +13,4 @@ route.post('/addusser',addUser)
 
 
 module.exports=route
+

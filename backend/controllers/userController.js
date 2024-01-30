@@ -2,51 +2,37 @@ const registeruser=require('../models/user')
 
 
 
-
-const addUser=(async(req,res)=>{
+// Add user
+const addUser=async(req,res)=>{
     try {
-        // Data from request body
-        const { fullname, email, dob, gender, phone } = req.body;
-
-        // Create new user instance
-        const newUser = new registeruser({
+        // get data from body
+        const{fullname,email,dob,gender,phone}=req.body;
+        const newuser=  new registeruser({
             fullname,
-            email,
+            email, 
             dob,
             gender,
-            phone
-        });
-
-        // Save user to database
-        const savedUser = await newUser.save();
-
-        // Send response
-        res.status(201).json({ message: 'User added successfully', user: savedUser });
-
-    } catch (error) {
-        console.error('Error adding user:', error.message);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-
-    
+            phone,
+        })
+        // save user
+        const saveuser=await newuser.save()
+        console.log(saveuser);
+        
+        res.status(200).json({'user':'user created successfull',saveuser})
+        ;
 
 
-});
-
-const loginUser=async(()=>{
-    try {
         
     } catch (error) {
+        res.status(500).json({"error":error}) 
         
     }
-})
+   
 
-const logoutUser=async(()=>{
-    try {
-        
-    } catch (error) {
-        
-    }
-})
+};
 
-module.exports={addUser,loginUser,logoutUser}
+
+module.exports=addUser
+
+
+
