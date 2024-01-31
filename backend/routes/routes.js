@@ -1,6 +1,6 @@
 const express=require('express')
 const route=express.Router()
-const {addUser,getUser,getsingleUser,deleteUser,updateUser} =require('../controllers/userController')
+const {addUser,getUser,getsingleUser,deleteUser,updateUser,updateUserPassword} =require('../controllers/userController')
 
 
 
@@ -18,6 +18,9 @@ route.delete('/delete/:id',deleteUser)
 
 // update user ...!!
 route.patch('/update/:id',updateUser)
+
+//update user password..!!
+route.patch('/password/:id',updateUserPassword)
 
 
 

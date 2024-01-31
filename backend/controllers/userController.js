@@ -54,84 +54,100 @@ const getUser = async (req, res) => {
 const getsingleUser = async (req, res) => {
   try {
     //to get is we can use any name like id,val anything =req.params
-    const {val} = req.params;;
-    const signleuser = await registeruser.findById({ _id:val });
+    const { val } = req.params;
+    const signleuser = await registeruser.findById({ _id: val });
 
     if (!signleuser) {
       // if user didn't get
-      return res.status(404).json({ message: "User not found" }); 
+      return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({ 'user': signleuser });
-
+    res.status(200).json({ user: signleuser });
   } catch (error) {
     res.status(500).json({ "No user found something wrong": error });
   }
 };
 
-
 //delete user...
-const deleteUser=async(req,res)=>{
-try {
-    
-        // to get id from req.params
-        const {id} =req.params;
-        const removeuser=await registeruser.findByIdAndDelete({_id:id})
+const deleteUser = async (req, res) => {
+  try {
+    // to get id from req.params
+    const { id } = req.params;
+    const removeuser = await registeruser.findByIdAndDelete({ _id: id });
 
-        // if did not get user to delete
-        if(!removeuser){
-            res.status(500).json({message:'user not found'})
-        }
+    // if did not get user to delete
+    if (!removeuser) {
+      res.status(500).json({ message: "user not found" });
+    }
 
-        res.status(200).json({'user deleted successfully':removeuser})
-
-
-} catch (error) {
-    res.status(500).json({'No user found to delete':error})
-    
-}
-}
+    res.status(200).json({ "user deleted successfully": removeuser });
+  } catch (error) {
+    res.status(500).json({ "No user found to delete": error });
+  }
+};
 
 //Update user...!!!!
 const updateUser = async (req, res) => {
   try {
-      const { id } = req.params;
-      const { fullname, email, dob, gender, phone ,password} = req.body;
+    const { id } = req.params;
+    const { fullname, email, dob, gender, phone, password } = req.body;
 
-      // // Find user by ID
-       //const user = await registeruser.findById(id);
+    // find user by ID..
+    const updatedUser = await registeruser.findByIdAndUpdate(
+      id,
+      { fullname, email, dob, gender, phone, password },
+      { new: true }
+    );
 
-      // if (!user) {
-      //     return res.status(404).json({ message: 'User not found' });
-      // }
-
-      // // Verify old password
-     //const isPasswordValid = await bcrypt.compare(password, user.password);
-
-     // if (!isPasswordValid) {
-       //    return res.status(400).json({ message: 'Old password does not match' });
-      //}
-
-      // // Hash the new password
-      //const hashedPassword = await bcrypt.hash(password, 10);
-
-      // Update user with hashed password
-      const updatedUser = await registeruser.findByIdAndUpdate(
-          id,
-          { fullname, email, dob, gender, phone,password},
-          { new: true }
-      );
-
-      res.status(200).json({ message: 'User updated successfully', user: updatedUser });
+    res
+      .status(200)
+      .json({ message: "User updated successfully", user: updatedUser });
   } catch (error) {
-      res.status(500).json({ message: 'Something went wrong', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
   }
 };
 
 
+// Update Password by using OlDpassword
+const updateUserPassword=async(req,res)=>{
+  try {
+    const {id} =req.params;
+
+    const {oldpassword,newpassword} =req.body;
+
+    //FIND USER BY ID!
+    const user= await registeruser.findById(id);
+
+    if(!user){
+      return res.status(404).json({ message: 'User not found' });
+
+    }
+
+    //VERIFY OLD PASSWORD!!
+    const isPasswordVerify=await bcrypt.compare(oldpassword,user.password)
+
+    //CHECK OLD PASSWORD IS  VERYFIED OR NOT!!
+    if(!isPasswordVerify){
+      return res.status(400).json({ message: 'Old password is incorrect' });
+
+    }
+
+    // HASHING  NEW PASSWORD !!!
+    const passwordhash=await bcrypt.hash(newpassword,10)
+
+    //PASSWORD HASHED WITH NEW PASSWORD
+    const passwordupdate=await registeruser.findByIdAndUpdate(id,{password:passwordhash},{new:true})
+
+    res.status(200).json({message: 'Password updated successfully', user: passwordupdate})
 
 
+  } catch (error) {
+    res.status(500).json({message:'Something went wrong', error: error.message})
+    
+  }
+}
 
 
-
-module.exports = { addUser, getUser, getsingleUser ,deleteUser,updateUser};
+module.exports = { addUser, getUser, getsingleUser, deleteUser, updateUser ,updateUserPassword};
