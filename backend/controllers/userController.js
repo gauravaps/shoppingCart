@@ -1,5 +1,7 @@
 const registeruser = require("../models/user");
 const bcrypt = require("bcryptjs");
+const jwt =require('jsonwebtoken')
+require('dotenv').config
 
 
 
@@ -26,7 +28,7 @@ const addUser = async (req, res) => {
     const hashedpassword = await bcrypt.hash(password, 10);
 
     // file path req.file
-    const picture=req.file.path;
+    const pictures=req.file.path;
 
     // register new users!!1
     const newuser = new registeruser({
@@ -36,7 +38,7 @@ const addUser = async (req, res) => {
       gender,
       phone,
       password: hashedpassword,
-      picture:picture
+      picture:pictures
     });
     // save user
     const saveuser = await newuser.save();
@@ -57,6 +59,7 @@ const getUser = async (req, res) => {
     res.status(500).json({ "user not found": error });
   }
 };
+
 // get signle user.!
 const getsingleUser = async (req, res) => {
   try {
@@ -156,5 +159,39 @@ const updateUserPassword=async(req,res)=>{
   }
 }
 
+//Login user...!!
 
-module.exports = { addUser, getUser, getsingleUser, deleteUser, updateUser ,updateUserPassword};
+const loginUser=async(req,res)=>{
+  const {email,password}=req.body;
+  try {
+    const login=await registeruser.findOne({email})
+
+    //IF DID NOT FIND ANY USER
+    if(!login){
+      
+     return res.status(500).json({message:'mail id not found ,please enter valid mail id'})
+    }
+
+    // CREATE JWT TOKEN...!
+    const token =await jwt.sign({email},process.env.SECRET_TOKEN,{expiresIn:'1hr'})
+
+    //IF PASSWORD MATCH
+    const getuser1=await bcrypt.compare(password,login.password)
+
+    // if(await bcrypt.compare(password,login.password))
+
+
+    //IF GETUSER1 IS FOUND OR TRUE ..
+    if(getuser1){
+      return res.status(200).json({message:'User login successfull','token':token})
+    }else{
+      res.status(500).json({message:'Password not match'}) 
+    }
+    
+  } catch (error) {
+    
+  }
+}
+
+
+module.exports = { addUser, getUser, getsingleUser, deleteUser, updateUser ,updateUserPassword,loginUser};

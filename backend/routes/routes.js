@@ -17,12 +17,15 @@ const storage=multer.diskStorage({
   //upload file here...
   const upload=multer({storage:storage}) 
 
-const {addUser,getUser,getsingleUser,deleteUser,updateUser,updateUserPassword} =require('../controllers/userController')
+const {addUser,getUser,getsingleUser,deleteUser,updateUser,updateUserPassword,loginUser} =require('../controllers/userController')
 
 
 
 //Add user router!
-route.post('/adduser',upload.single('picture'), addUser)
+route.post('/adduser',upload.single('picture'), addUser) 
+
+//LOGIN USER ROUTE...!!
+route.post('/login',loginUser)
 
 //get user Data!1
 route.get('/getuser',getUser)
