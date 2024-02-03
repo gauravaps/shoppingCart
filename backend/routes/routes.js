@@ -22,9 +22,11 @@ const {addUser,getUser,getsingleUser,deleteUser,updateUser,updateUserPassword,lo
 
 
 //Add user router!
+//http://localhost:5000/api/adduser
 route.post('/adduser',upload.single('picture'), addUser) 
 
 //LOGIN USER ROUTE...!!
+//http://localhost:5000/api/login
 route.post('/login',loginUser)
 
 //get user Data!1

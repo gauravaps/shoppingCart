@@ -1,9 +1,15 @@
 import React from 'react'
+import {Routes,Route} from 'react-router-dom'
+import Registration from './Registration'
 
 const App = () => {
   return (
     <div>
-      <h1>this is new shopping Cart.com</h1>
+      
+      <Registration/>
+      <Routes>
+        <Route/>
+      </Routes>
     </div>
   )
 }
