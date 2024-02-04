@@ -12,9 +12,9 @@ const userschema=new mongoose.Schema({
         required:true,
         unique:true,
         validate:{
-            validator:(v) => {
+            validator:(email) => {
                                 // Regular expression for email validation
-                                 return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(v);
+                                 return /^\s*[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\s*$/.test(email);
                              },
                             message: error => `${error.value} is not a valid email address`
         }
@@ -34,8 +34,8 @@ const userschema=new mongoose.Schema({
         type:String,
         required:true,
         validate:{
-            validator:(v)=>{
-                    return /^\d{10}$/.test(v)
+            validator:(phone)=>{
+                    return /^\d{10}$/.test(phone)
                      },
                      message:error=>`${error.value} this is invalid number`
         }

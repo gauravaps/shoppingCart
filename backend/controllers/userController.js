@@ -14,14 +14,14 @@ const addUser = async (req, res) => {
 
     // check if any require fields are empty
     if (!fullname || !email || !dob || !gender || !phone || !password) {
-      return res.status(400).json("all fields are required please fill");
+      return res.status(400).json({error: "all fields are required please fill"});
     }
 
     // check if user is already registered!
     const userExist = await registeruser.findOne({ email });
 
     if (userExist) {
-      res.status(400).json("user already registered!");
+     return res.status(400).json({message:"user already registered!"});
     }
 
     // hashing password
@@ -44,7 +44,7 @@ const addUser = async (req, res) => {
     const saveuser = await newuser.save();
     console.log(saveuser);
 
-    res.status(200).json({ user: "user created successfull", saveuser });
+    res.status(200).json({ message: "user created successfull", saveuser });
   } catch (error) {
     res.status(500).json({ error: error });
   }
