@@ -8,7 +8,14 @@ const route=require('./routes/routes')
 require('dotenv').config()
 const app=express()
 //use cors
-app.use(cors())
+const corsOptions = {
+    origin: '*', // Allow all origins
+    methods: '*', // Allow all methods
+    allowedHeaders: '*' // Allow all headers
+};
+
+app.use(cors(corsOptions));
+
 
 
 //use body-parser for json and URL incoded..

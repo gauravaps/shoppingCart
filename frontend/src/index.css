@@ -11,7 +11,7 @@
     border: 1px solid #ccc;
     padding: 20px;
     border-radius: 5px;
-    background-color: #333; /* Dark grey background color */
+    background-color: #140404; /* Dark grey background color */
     box-shadow: 0px 0px 0px 5px rgba(10, 2, 9, 0.945); /* Box shadow */
 
 
@@ -64,6 +64,44 @@
   }
   
   body{
-    background-color: #33333338;
+    background-color: #4d075ff1;
     
   }
+
+
+
+  /* index.css */
+
+
+.btn1 {
+  padding: 12px 20px; /* Modified padding values */
+
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn1:hover {
+  background-color: #0056b3;
+}
+
+.errormsg {
+  margin-top: 10px;
+}
+
+.notregister {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.regLink {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.regLink:hover {
+  text-decoration: underline;
+}

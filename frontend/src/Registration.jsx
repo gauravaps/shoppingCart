@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./index.css";
+import { Link } from "react-router-dom";
 
 const Registration = () => {
   const [fullname, setFullname] = useState("");
@@ -175,7 +176,8 @@ const Registration = () => {
           Submit
         </button>
       </form>
-      <h5>Already registered .. login here</h5>
+      <h4 className='notregister'>Already registered ..<Link className='regLink' to={'/login'}>Login here </Link>  </h4>
+      
     </div>
   );
 };

@@ -162,15 +162,16 @@ const updateUserPassword=async(req,res)=>{
 //Login user...!!
 
 const loginUser=async(req,res)=>{
-  const {email,password}=req.body;
+  
   try {
-    const login=await registeruser.findOne({email})
+    const {email,password}=req.body;
+    const login=await registeruser.findOne({email:email})
 
     //IF DID NOT FIND ANY USER
     if(!login){
       
      return res.status(500).json({message:'mail id not found ,please enter valid mail id'})
-    }
+    } 
 
     // CREATE JWT TOKEN...!
     const token =await jwt.sign({email},process.env.SECRET_TOKEN,{expiresIn:'1hr'})
@@ -185,10 +186,13 @@ const loginUser=async(req,res)=>{
     if(getuser1){
       return res.status(200).json({message:'User login successfull','token':token})
     }else{
-      res.status(500).json({message:'Password not match'}) 
+     return res.status(500).json({message:'Password not match'}) 
     }
     
   } catch (error) {
+    
+    console.error('Error in login:', error);
+    return res.status(500).json({ message: 'Internal server error' });
     
   }
 }
