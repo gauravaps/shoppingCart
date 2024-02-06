@@ -17,7 +17,10 @@ const storage=multer.diskStorage({
   //upload file here...
   const upload=multer({storage:storage}) 
 
-const {addUser,getUser,getsingleUser,deleteUser,updateUser,updateUserPassword,loginUser} =require('../controllers/userController')
+const {addUser,getUser,
+  getsingleUser,deleteUser,
+  updateUser,updateUserPassword,
+  loginUser,getUserToken, logOutUser} =require('../controllers/userController')
 
 
 
@@ -43,6 +46,15 @@ route.patch('/update/:id',updateUser)
 
 //update user password..!!
 route.patch('/password/:id',updateUserPassword)
+
+//GEt user token from token table data base..
+//http://localhost:5000/api/token
+route.post('/token',getUserToken)
+
+//LOGOUT USER BY USING TOKEN
+//http://localhost:5000/api/LOGOUT
+route.post('/logout',logOutUser)
+
 
 
 

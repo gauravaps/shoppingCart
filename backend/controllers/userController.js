@@ -1,6 +1,7 @@
 const registeruser = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt =require('jsonwebtoken')
+const tokens=require('../models/tokens')
 require('dotenv').config
 
 
@@ -167,6 +168,7 @@ const loginUser=async(req,res)=>{
     const {email,password}=req.body;
     const login=await registeruser.findOne({email:email})
 
+
     //IF DID NOT FIND ANY USER
     if(!login){
       
@@ -176,6 +178,25 @@ const loginUser=async(req,res)=>{
     // CREATE JWT TOKEN...!
     const token =await jwt.sign({email},process.env.SECRET_TOKEN,{expiresIn:'1hr'})
 
+
+        // Calculate expiresAt
+        const expiryTimeInMilliseconds = 60 * 60 * 1000; // 1 hour
+
+    const expiresAt=new Date(Date.now()+expiryTimeInMilliseconds)
+
+
+    // Create token document
+   const tokensave =  new tokens({
+      userid:login._id,
+      expiresAt:expiresAt,
+      token:token
+    })
+
+    // Save the token document
+
+   await tokensave.save()
+
+
     //IF PASSWORD MATCH
     const getuser1=await bcrypt.compare(password,login.password)
 
@@ -184,7 +205,7 @@ const loginUser=async(req,res)=>{
 
     //IF GETUSER1 IS FOUND OR TRUE ..
     if(getuser1){
-      return res.status(200).json({message:'User login successfull','token':token})
+      return res.status(200).json({'fname':login.fullname,message:'User login successfull','token':token})
     }else{
      return res.status(500).json({message:'Password not match'}) 
     }
@@ -197,5 +218,57 @@ const loginUser=async(req,res)=>{
   }
 }
 
+// GET TOKENS FROM TOKENS TABLE !!!
 
-module.exports = { addUser, getUser, getsingleUser, deleteUser, updateUser ,updateUserPassword,loginUser};
+const getUserToken=async(req,res)=>{
+  const token=req.body.token;
+
+  try {
+    const userTokensGet=await tokens.findOne({token})
+
+    if(!userTokensGet){
+     return res.status(500).json({'sts':0})
+    }else{
+     return res.status(200).json({'sts':1})
+    }
+    
+  } catch (error) {
+    res.status(500).json({message:"No token found"})
+    
+  }
+}
+
+
+// LOGOUT USER USING TOKEN
+const logOutUser=async(req,res)=>{
+
+  const token=req.body.token
+
+  try {
+
+    const getLoginuser =await tokens.findOneAndDelete({token})
+
+// if did't get any active user
+    if(!getLoginuser){
+
+     return res.status(500).json({'tkn':0})
+     
+    }else{
+
+     return res.status(200).json({'tkn':1})
+    }
+
+
+    
+  } catch (error) {
+    res.status(500).json({message:'active user not found','error':error})
+    
+  }
+}
+
+
+module.exports = { addUser, getUser, 
+  getsingleUser, deleteUser, 
+  updateUser ,updateUserPassword,
+  loginUser,getUserToken,
+  logOutUser};

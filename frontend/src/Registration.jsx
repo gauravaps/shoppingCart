@@ -94,7 +94,12 @@ const Registration = () => {
 
   return (
     <div className="heading">
-      <h2>User Registration Form</h2>
+      {/* <h2>User Registration Form</h2> */}
+      <div className="login">
+    <h2>
+        <span>User Registration Form</span>
+    </h2>
+</div>
       <form className="formstart" onSubmit={handleSubmit}>
         <div className="labelstart">
           <label className="lab">Full name:</label>
