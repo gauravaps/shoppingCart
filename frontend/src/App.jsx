@@ -4,6 +4,7 @@ import Registration from "./Registration";
 import Login from "./Login";
 import Home from "./Home";
 import axios from "axios";
+import Logout from "./Logout";
 
 
 const App = () => {
@@ -60,6 +61,7 @@ const App = () => {
         <Route path="/" element={<Registration />} />
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/logout" element={<Logout/>}/>
       </Routes>
     </div>
   );
